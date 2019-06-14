@@ -12,5 +12,12 @@
     <groupId>com.leyou.common</groupId>
     <artifactId>ly-common</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>
