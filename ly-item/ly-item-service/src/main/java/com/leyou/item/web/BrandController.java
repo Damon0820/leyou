@@ -42,4 +42,26 @@ public class BrandController {
         brandService.insertCategoryBrand(name, letter, cids);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    /**
+     * 更新商品信息
+     * TODO: 更新关联表
+     * @param id
+     * @param name
+     * @param letter
+     * @return
+     */
+    @PostMapping("update")
+    public ResponseEntity<Integer> updateBrand(
+            @RequestParam(value = "id", required = true) String id,
+            @RequestParam(value = "name", required = true) String name,
+            @RequestParam(value = "letter", required = true) Character letter
+//            @RequestParam(value = "cids", required = false) List<Long> cids
+    ) {
+        int updatedId = brandService.updateBrand(id, name, letter);
+//        if (updatedId == null) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+        return ResponseEntity.ok(updatedId);
+    }
 }

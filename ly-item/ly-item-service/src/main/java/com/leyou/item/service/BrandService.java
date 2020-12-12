@@ -51,4 +51,11 @@ public class BrandService {
             brandMapper.insertCategoryBrand(cid, brand.getId());
         }
     }
+
+    public int updateBrand(String id, String name, Character letter) {
+        Brand brand = new Brand();
+        brand.setName(name);
+        brand.setLetter(letter);
+        return brandMapper.updateBrand(id, name, letter);
+    }
 };
