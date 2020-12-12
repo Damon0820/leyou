@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.StringUtil;
 
+import java.util.List;
+
 @Service
 public class BrandService {
 
@@ -36,4 +38,17 @@ public class BrandService {
         Page<Brand> pageInfo = (Page<Brand>) brandMapper.selectByExample(example);
         return new PageResult<Brand>(pageInfo.getTotal(), pageInfo);
     }
-}
+
+    public void insertCategoryBrand(String name, Character letter, List<Long> cids) {
+//        return void;
+        Brand brand = new Brand();
+        brand.setName(name);
+        brand.setLetter(letter);
+        brandMapper.insertSelective(brand);
+        Brand brand1 = brandMapper.selectOne(brand);
+        for (Long cid:
+             cids) {
+            brandMapper.insertCategoryBrand(cid, brand.getId());
+        }
+    }
+};
