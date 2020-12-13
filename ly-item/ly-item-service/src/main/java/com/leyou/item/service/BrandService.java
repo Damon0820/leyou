@@ -58,4 +58,9 @@ public class BrandService {
         brand.setLetter(letter);
         return brandMapper.updateBrand(id, name, letter);
     }
+
+    public void deleteBrand(Long bid) {
+        brandMapper.deleteBrand(bid);
+        brandMapper.deleteCategoryBrand(bid);
+    }
 };

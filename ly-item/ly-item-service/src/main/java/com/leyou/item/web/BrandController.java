@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("brand")
@@ -63,5 +64,13 @@ public class BrandController {
 //            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //        }
         return ResponseEntity.ok(updatedId);
+    }
+
+    @PostMapping("delete")
+    public ResponseEntity<Void> deleteBrand(
+            @RequestBody Brand brand
+    ) {
+        brandService.deleteBrand(brand.getId());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
