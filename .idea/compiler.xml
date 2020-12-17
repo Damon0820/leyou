@@ -13,6 +13,8 @@
         <module name="ly-item-service" />
         <module name="ly-registry" />
         <module name="ly-upload" />
+        <module name="ly-user-interface" />
+        <module name="ly-user-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,6 +26,9 @@
       <module name="ly-item-service" target="1.8" />
       <module name="ly-registry" target="1.8" />
       <module name="ly-upload" target="1.8" />
+      <module name="ly-user" target="1.8" />
+      <module name="ly-user-interface" target="1.8" />
+      <module name="ly-user-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -34,6 +39,9 @@
       <module name="ly-item-service" options="-parameters" />
       <module name="ly-registry" options="-parameters" />
       <module name="ly-upload" options="-parameters" />
+      <module name="ly-user" options="-parameters" />
+      <module name="ly-user-interface" options="-parameters" />
+      <module name="ly-user-service" options="-parameters" />
     </option>
   </component>
 </project>
