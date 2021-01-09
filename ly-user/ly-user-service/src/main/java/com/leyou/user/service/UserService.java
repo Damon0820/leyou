@@ -83,12 +83,11 @@ public class UserService {
      * @return
      */
     public User queryUserByUsernameAndPassword(String username, String password) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        User user1 = userMapper.selectOne(user);
-        if (user1 == null) return null;
-        if (!user1.getPassword().equals(CodecUtils.md5Hex(user.getPassword(), user1.getSalt()))) {
+        User record = new User();
+        record.setUsername(username);
+        User user = userMapper.selectOne(record);
+        if (user == null) return null;
+        if (!user.getPassword().equals(CodecUtils.md5Hex(password, user.getSalt()))) {
             return null;
         }
         return user;

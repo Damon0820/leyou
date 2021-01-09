@@ -1,4 +1,4 @@
-package com.leyou.user.controller;
+package com.leyou.user.controller.app;
 
 import com.aliyuncs.CommonResponse;
 import com.leyou.user.service.SmsSendService;

@@ -1,17 +1,16 @@
-package com.leyou.user.controller;
+package com.leyou.user.controller.app;
 
+import com.leyou.common.enums.ExceptionEnum;
+import com.leyou.common.exception.LyException;
 import com.leyou.user.pojo.User;
 import com.leyou.user.service.UserService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController()
+@RestController
 public class UserController {
 
     @Autowired
@@ -50,7 +49,8 @@ public class UserController {
     ) {
         User user = userService.queryUserByUsernameAndPassword(username, password);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new LyException(ExceptionEnum.USER_LOGIN_ERROR);
+//            return new ResponseEntity<>(, HttpStatus.OK);
         }
         return ResponseEntity.ok(user);
     }

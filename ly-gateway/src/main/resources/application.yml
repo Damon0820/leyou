@@ -12,9 +12,12 @@ zuul:
   routes:
     item-service: /item/** # 商品服务
     user-service: /user/** # 用户服务
+    auth-service: /auth/** # 授权中心
+  add-host-header: true # 转发的时候，携带原本head头信息
+  sensitive-headers: # 过滤掉敏感的头信息,设置为null，则不会禁止
 ribbon:
-  ConnectTimeout: 1000 # 连接超时时间(ms)
-  ReadTimeout: 3500 # 通信超时时间(ms)
+  ConnectTimeout: 100000 # 连接超时时间(ms)
+  ReadTimeout: 600000 # 通信超时时间(ms)
   MaxAutoRetriesNextServer: 0 # 同一服务不同实例的重试次数
   MaxAutoRetries: 0 # 同一实例的重试次数
 hystrix:
@@ -23,4 +26,4 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMillisecond: 10000 # 熔断超时时长：5000ms
+            timeoutInMillisecond: 100000 # 熔断超时时长：5000ms

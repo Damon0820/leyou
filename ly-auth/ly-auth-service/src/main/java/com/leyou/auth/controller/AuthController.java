@@ -1,0 +1,57 @@
+package com.leyou.auth.controller;
+
+import com.leyou.auth.properties.JwtProperties;
+import com.leyou.auth.service.AuthService;
+import com.leyou.common.enums.ExceptionEnum;
+import com.leyou.common.exception.LyException;
+import com.leyou.common.utils.CookieUtils;
+import com.leyou.user.pojo.User;
+import com.netflix.discovery.converters.Auto;
+import com.netflix.ribbon.proxy.annotation.Http;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@RestController
+//@EnableConfigurationProperties(JwtProperties.class);
+public class AuthController {
+
+    @Autowired
+    AuthService authService;
+
+    @Autowired
+    JwtProperties jwtProperties;
+
+    /**
+     * 登录授权
+     * @param username
+     * @param password
+     * @return
+     */
+    @PostMapping("accredit")
+    public ResponseEntity<String> authentication(
+        @RequestParam(value = "username", required = true) String username,
+        @RequestParam(value = "password", required = true) String password,
+        HttpServletRequest httpServletRequest,
+        HttpServletResponse httpServletResponse
+    ){
+        String token = authService.authentication(username, password);
+        if (StringUtils.isBlank(token)) {
+            throw new LyException(ExceptionEnum.USER_LOGIN_ERROR);
+        }
+        // 将token写入cookie,并指定httpOnly为true，防止通过JS获取和修改
+//        CookieUtils.setCookie(httpServletRequest, httpServletResponse, jwtProperties.);
+        CookieUtils.setCookie(httpServletRequest, httpServletResponse, jwtProperties.getCookieName(), token, jwtProperties.getExpire(), true);
+        return ResponseEntity.ok(token);
+    }
+
+}
