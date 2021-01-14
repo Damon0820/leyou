@@ -2,12 +2,14 @@ package com.leyou.auth.controller;
 
 import com.leyou.auth.properties.JwtProperties;
 import com.leyou.auth.service.AuthService;
+import com.leyou.auth.utils.JwtUtils;
 import com.leyou.common.enums.ExceptionEnum;
 import com.leyou.common.exception.LyException;
 import com.leyou.common.utils.CookieUtils;
 import com.leyou.user.pojo.User;
 import com.netflix.discovery.converters.Auto;
 import com.netflix.ribbon.proxy.annotation.Http;
+import con.leyou.auth.pojo.UserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -54,4 +56,19 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
+    /**
+     * 登录验证
+     */
+    @GetMapping("verify")
+    public ResponseEntity<UserInfo> verifyUser(
+            @CookieValue("LY_TOKEN") String token
+    ) {
+        try {
+            UserInfo userInfo = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
+            return ResponseEntity.ok(userInfo);
+        } catch (Exception e) {
+            throw new  LyException(ExceptionEnum.TOKEN_ERROR);
+        }
+
+    }
 }
