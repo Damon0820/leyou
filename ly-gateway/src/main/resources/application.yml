@@ -27,3 +27,16 @@ hystrix:
         isolation:
           thread:
             timeoutInMillisecond: 100000 # 熔断超时时长：5000ms
+# 配置
+leyou:
+  jwt:
+    pubKeyPath: /Users/damon/up/learning/upload/jwt/rsa.pub # 公钥地址
+    cookieName: LY_TOKEN
+  filter:
+    allowPaths:
+      - /api/auth
+      - /api/search
+      - api/user/register
+      - api/user/check
+      - api/user/sms
+      - api/item

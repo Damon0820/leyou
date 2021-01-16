@@ -61,10 +61,14 @@ public class AuthController {
      */
     @GetMapping("verify")
     public ResponseEntity<UserInfo> verifyUser(
-            @CookieValue("LY_TOKEN") String token
+            @CookieValue("LY_TOKEN") String token,
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
         try {
             UserInfo userInfo = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
+            // 用户信息有效，重置token有效时间
+            CookieUtils.setCookie(request, response, this.jwtProperties.getCookieName(), token, this.jwtProperties.getExpire());
             return ResponseEntity.ok(userInfo);
         } catch (Exception e) {
             throw new  LyException(ExceptionEnum.TOKEN_ERROR);
