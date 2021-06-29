@@ -1,1 +1,5 @@
-E:\github\spring-cloud-shop\leyou\ly-gateway\src\main\java\com\leyou\gateway\LyGateway.java
+/Users/damon/up/github/leyou/ly-gateway/src/main/java/com/leyou/gateway/filter/LoginFilter.java
+/Users/damon/up/github/leyou/ly-gateway/src/main/java/com/leyou/gateway/config/GlobalCorsConfig.java
+/Users/damon/up/github/leyou/ly-gateway/src/main/java/com/leyou/gateway/LyGateway.java
+/Users/damon/up/github/leyou/ly-gateway/src/main/java/com/leyou/gateway/properties/FilterProperties.java
+/Users/damon/up/github/leyou/ly-gateway/src/main/java/com/leyou/gateway/properties/JwtProperties.java

@@ -36,7 +36,7 @@ leyou:
     allowPaths:
       - /api/auth
       - /api/search
-      - api/user/register
-      - api/user/check
-      - api/user/sms
-      - api/item
+      - /api/user/register
+      - /api/user/check
+      - /api/user/sms
+      - /api/item

@@ -94,4 +94,15 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <!--解决打包后，运行jar包，找不到主清单都问题-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+
 </project>
