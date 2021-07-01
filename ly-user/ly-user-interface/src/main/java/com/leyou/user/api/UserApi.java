@@ -15,4 +15,9 @@ public interface UserApi {
          @RequestParam(value = "password") String password
     );
 
+    @GetMapping("queryUserByUsername")
+    public User queryUserByUsername(
+            @RequestParam(value = "username") String username
+    );
+
 }

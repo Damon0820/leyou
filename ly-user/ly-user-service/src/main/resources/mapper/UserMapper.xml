@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leyou.user.mapper.UserMapper">
+    <!--<resultMap id="OrderWithDetail" type="com.leyou.order.pojo.Order" autoMapping="true">-->
+        <!--<id column="order_id" property="orderId"></id>-->
+    <!--</resultMap>-->
+    <select id="selectCountByNameOrPhone" parameterType="com.leyou.user.pojo.User" resultType="int">
+        SELECT COUNT(0)
+        FROM tb_user o
+        WHERE 1 = 1
+          <if test="username != null and username != ''">
+              and username = #{username}
+          </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+    </select>
+</mapper>

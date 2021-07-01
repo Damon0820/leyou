@@ -2,7 +2,10 @@ package com.leyou.gateway.filter;
 
 import com.leyou.auth.utils.JwtUtils;
 import com.leyou.auth.utils.RsaUtils;
+import com.leyou.common.enums.ExceptionEnum;
+import com.leyou.common.exception.LyException;
 import com.leyou.common.utils.CookieUtils;
+import com.leyou.common.vo.Result;
 import com.leyou.gateway.properties.FilterProperties;
 import com.leyou.gateway.properties.JwtProperties;
 import com.netflix.zuul.ZuulFilter;
@@ -63,6 +66,11 @@ public class LoginFilter extends ZuulFilter {
             // 异常，403
             context.setSendZuulResponse(false);
             context.setResponseStatusCode(HttpStatus.FORBIDDEN.value());
+            // TODO: 鉴权失败统一返回code：999
+//            context.setResponseStatusCode(HttpStatus.OK.value());
+//            context.setResponseBody("token失效了吧");
+//            context.setResponseBody(new Result(999, "token失效", null));
+//            throw new LyException(ExceptionEnum.TOKEN_ERROR);
         }
         return null;
     }

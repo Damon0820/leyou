@@ -34,9 +34,10 @@ leyou:
     cookieName: LY_TOKEN
   filter:
     allowPaths:
-      - /api/auth
-      - /api/search
+      - /api/auth/accredit
       - /api/user/register
       - /api/user/check
       - /api/user/sms
+      - /api/user/queryUserByUsernameAndPassword
       - /api/item
+      - /api/search

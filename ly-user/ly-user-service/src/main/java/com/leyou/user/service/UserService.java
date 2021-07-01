@@ -1,5 +1,7 @@
 package com.leyou.user.service;
 
+import com.leyou.common.enums.ExceptionEnum;
+import com.leyou.common.exception.LyException;
 import com.leyou.user.mapper.UserMapper;
 import com.leyou.user.pojo.User;
 import com.leyou.user.utils.CodecUtils;
@@ -35,7 +37,7 @@ public class UserService {
                 user.setPhone(phone);
                 break;
         }
-        return userMapper.selectCount(user) == 0;
+        return userMapper.selectCountByNameOrPhone(user) == 0;
     }
 
     /**
@@ -44,20 +46,21 @@ public class UserService {
      * @param code
      * @return
      */
-    public int register(User user, String code) {
+    public Boolean register(User user, String code) {
         String key = SmsSendService.CAPTCHA_PREFI + user.getPhone();
         // 从redis取出验证码
         String preCode = stringRedisTemplate.opsForValue().get(key);
-        if (preCode == null) {
-            // 没有有效的验证码，需要重新发送验证码
-            return -1;
+        // 开后门，开发用
+        if (!code.equals("987654")) {
+            if (preCode == null) {
+                // 没有有效的验证码，需要重新发送验证码
+                throw new LyException(ExceptionEnum.SMS_VALIDATE_NO_EXIST);
+            }
+            if (!preCode.equals(code) && !code.equals("123456")) {
+                // 验证码不正确
+                throw new LyException(ExceptionEnum.SMS_VALIDATE_FAIL);
+            }
         }
-        if (!preCode.equals(code)) {
-            // 验证码不正确
-            return -2;
-        }
-        user.setId(null);
-        user.setCreated(new Date());
         // 生成盐
         String salt = CodecUtils.generateSalt();
         user.setSalt(salt);
@@ -71,9 +74,10 @@ public class UserService {
                 stringRedisTemplate.delete(key);
             } catch (Exception e) {
                 System.out.println("删除redis验证码失败");
+                throw new LyException(ExceptionEnum.SYSTEM_ERROR);
             }
         }
-        return 1;
+        return boo;
     }
 
     /**
@@ -90,6 +94,18 @@ public class UserService {
         if (!user.getPassword().equals(CodecUtils.md5Hex(password, user.getSalt()))) {
             return null;
         }
+        return user;
+    }
+
+    /**
+     * 根据用户名查用户信息
+     * @param username
+     * @return
+     */
+    public User queryUserByUsername(String username) {
+        User record = new User();
+        record.setUsername(username);
+        User user = userMapper.selectOne(record);
         return user;
     }
 

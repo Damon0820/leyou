@@ -33,4 +33,16 @@ public class AuthService {
         return null;
     }
 
+    public User queryUserInfoByUsername(String username){
+        // 调用微服务，查询用户信息
+        try{
+            User user = userApi.queryUserByUsername(username);
+            if (user == null) return null;
+            return user;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

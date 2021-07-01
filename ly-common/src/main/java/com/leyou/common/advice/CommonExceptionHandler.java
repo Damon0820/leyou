@@ -15,6 +15,6 @@ public class CommonExceptionHandler {
     @ExceptionHandler(LyException.class)
     public ResponseEntity<ExceptionResult> handleException(LyException e) {
         ExceptionEnum em = e.getExceptionEnum();
-        return ResponseEntity.status(em.getCode()).body(new ExceptionResult(em));
+        return ResponseEntity.status(HttpStatus.OK).body(new ExceptionResult(em));
     }
 }

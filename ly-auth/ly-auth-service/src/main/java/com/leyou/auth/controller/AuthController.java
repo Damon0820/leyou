@@ -6,6 +6,7 @@ import com.leyou.auth.utils.JwtUtils;
 import com.leyou.common.enums.ExceptionEnum;
 import com.leyou.common.exception.LyException;
 import com.leyou.common.utils.CookieUtils;
+import com.leyou.common.vo.Result;
 import com.leyou.user.pojo.User;
 import com.netflix.discovery.converters.Auto;
 import com.netflix.ribbon.proxy.annotation.Http;
@@ -40,7 +41,7 @@ public class AuthController {
      * @return
      */
     @PostMapping("accredit")
-    public ResponseEntity<String> authentication(
+    public ResponseEntity<Result<String>> authentication(
         @RequestParam(value = "username", required = true) String username,
         @RequestParam(value = "password", required = true) String password,
         HttpServletRequest httpServletRequest,
@@ -53,14 +54,14 @@ public class AuthController {
         // 将token写入cookie,并指定httpOnly为true，防止通过JS获取和修改
 //        CookieUtils.setCookie(httpServletRequest, httpServletResponse, jwtProperties.);
         CookieUtils.setCookie(httpServletRequest, httpServletResponse, jwtProperties.getCookieName(), token, jwtProperties.getExpire(), true);
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(Result.success(token));
     }
 
     /**
      * 登录验证
      */
     @GetMapping("verify")
-    public ResponseEntity<UserInfo> verifyUser(
+    public ResponseEntity<Result<UserInfo>> verifyUser(
             @CookieValue("LY_TOKEN") String token,
             HttpServletRequest request,
             HttpServletResponse response
@@ -69,10 +70,26 @@ public class AuthController {
             UserInfo userInfo = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
             // 用户信息有效，重置token有效时间
             CookieUtils.setCookie(request, response, this.jwtProperties.getCookieName(), token, this.jwtProperties.getExpire());
-            return ResponseEntity.ok(userInfo);
+            return ResponseEntity.ok(Result.success(userInfo));
         } catch (Exception e) {
             throw new  LyException(ExceptionEnum.TOKEN_ERROR);
         }
 
+    }
+
+    /**
+     * 根据token获取完整用户信息
+     */
+    @GetMapping("queryUserInfoByToken")
+    public ResponseEntity<Result<User>> queryUserInfoByToken(
+            @CookieValue("LY_TOKEN") String token
+    ) {
+        try {
+            UserInfo userInfo = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
+            User user = authService.queryUserInfoByUsername(userInfo.getUsername());
+            return ResponseEntity.ok(Result.success(user));
+        } catch (Exception e) {
+            throw new LyException(ExceptionEnum.TOKEN_ERROR);
+        }
     }
 }

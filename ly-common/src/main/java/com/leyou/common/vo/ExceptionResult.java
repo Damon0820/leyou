@@ -5,11 +5,11 @@ import lombok.Data;
 
 @Data
 public class ExceptionResult {
-    private int status;
+    private int code;
     private String message;
 
     public ExceptionResult(ExceptionEnum em) {
-        this.status = em.getCode();
+        this.code = em.getCode();
         this.message = em.getMsg();
     }
 }
